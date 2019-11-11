@@ -37,50 +37,53 @@ Example:
 
 #### Database schema
 
+
 ![schema](imgs/ER_Diagram.png) 
 
-#### Fact Table
+##### Fact Table
 **songplays** - records in log data associated with song plays i.e. records with page NextSong
-- songplay_id (serial PRIMARY KEY): ID of each user song play 
-- start_time (timestamp NOT NULL): Timestamp of beggining of user activity
-- user_id (integer NOT NULL): ID of user
-- level (text): User level {free | paid}
-- song_id (text NOT NULL): ID of Song played
-- artist_id (text NOT NULL): ID of Artist of the song played
-- session_id (integer): ID of the user Session 
-- location (text): User location 
-- user_agent (text): Agent used by user to access Sparkify platform
+- songplay_id SERIAL PRIMARY KEY
+- start_time TIMESTAMP NOT NULL REFERENCES time(start_time)
+- user_id INTEGER NOT NULL REFERENCES users (user_id)
+- level TEXT
+- song_id TEXT REFERENCES songs (song_id)
+- artist_id TEXT REFERENCES artists (artist_id)
+- session_id INTEGER NOT NULL
+- location TEXT
+- user_agent TEXT
 
-#### Dimension Tables
+##### Dimension Tables
 **users** - users in the app
-- user_id (integer) PRIMARY KEY: ID of user
-- first_name (text) NOT NULL: Name of user
-- last_name (text) NOT NULL: Last Name of user
-- gender (text): Gender of user {M | F}
-- level (text): User level {free | paid}
+- user_id INTEGER PRIMARY KEY
+- first_name TEXT NOT NULL
+- last_name TEXT NOT NULL
+- gender CHAR(1)
+- level TEXT NOT NULL
 
 **songs** - songs in music database
-- song_id (text) PRIMARY KEY: ID of Song
-- title (text) NOT NULL: Title of Song
-- artist_id (text) NOT NULL: ID of song Artist
-- year (integer): Year of song release
-- duration (numeric) NOT NULL: Song duration in milliseconds
+- song_id TEXT PRIMARY KEY
+- title TEXT NOT NULL
+- artist_id TEXT NOT NULL
+- year INTEGER NOT NULL
+- duration NUMERIC NOT NULL
 
 **artists** - artists in music database
-- artist_id (text) PRIMARY KEY: ID of Artist
-- name (text) NOT NULL: Name of Artist
-- location (text): Name of Artist city
-- lattitude (numeric): Lattitude location of artist
-- longitude (numeric): Longitude location of artist
+- artist_id TEXT PRIMARY KEY
+- name TEXT NOT NULL
+- location TEXT
+- latitude NUMERIC
+- longitude NUMERIC
 
 **time** - timestamps of records in songplays broken down into specific units
-- start_time (timestamp) PRIMARY KEY: Timestamp of row
-- hour (integer): Hour associated to start_time
-- day (integer): Day associated to start_time
-- week (integer): Week of year associated to start_time
-- month (integer): Month associated to start_time 
-- year (integer): Year associated to start_time
-- weekday (integer): Name of week day associated to start_time
+- start_time TIMESTAMP NOT NULL PRIMARY KEY
+- hour INTEGER NOT NULL
+- day INTEGER NOT NULL
+- week INTEGER NOT NULL
+- month INTEGER NOT NULL
+- year INTEGER NOT NULL
+- weekday INTEGER NOT NULL
 
 --------------------------------------------
+#### Structure
 
+#### Example SQL Queries
