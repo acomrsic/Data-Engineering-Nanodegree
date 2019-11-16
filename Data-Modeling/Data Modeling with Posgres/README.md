@@ -116,9 +116,17 @@ etl.main()
 
 
 #### Example SQL Queries
-<I> For strategical purposes you may want to know which is the most <br> used user agent</I>
+This SQL query shows which gender listen more music:
 
 ```
-SELECT user_agent, count(user_agent) FROM songplays GROUP BY user_agent;
+SELECT u.gender, count(s.songplay_id) FROM songplays as s JOIN users as u ON s.user_id=u.user_id GROUP BY u.gender
 ```
 
+First, last name and gender who streams the most music:
+```
+SELECT first_name, last_name,gender FROM 
+    (SELECT u.user_id,u.first_name, u.last_name,u.gender, count(s.songplay_id) as song_play_cnt 
+    FROM songplays as s JOIN users as u ON s.user_id=u.user_id 
+    GROUP BY u.user_id,u.first_name, u.last_name,u.gender) AS inner_q  
+ORDER BY song_play_cnt DESC LIMIT 1; 
+```
