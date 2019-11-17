@@ -7,17 +7,18 @@ from sql_queries import *
 
 def process_song_file(cur, filepath):
     """
-        The function reads information from JSON files about song and artist.
-        Input parameters:
-            cur: db cursor
-            filepath: JSON files location
-        Return: None
+    The function reads information from JSON files about song and artist.
+    :param cur: postgres db cursor
+    :param filepath: JSON files location
+    :return: None
     """
+
     # open song file
     df = pd.read_json(filepath, lines=True)
 
     # insert artist record
-    artist_data = df[["artist_id", "artist_name", "artist_location", "artist_latitude", "artist_longitude"]].values[0].tolist()
+    artist_data = df[["artist_id", "artist_name", "artist_location", "artist_latitude", "artist_longitude"]].values[
+        0].tolist()
     cur.execute(artist_table_insert, artist_data)
 
     # insert song record
@@ -26,6 +27,13 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+    The function reads user activity log, filters by NexSong, selects needed fields, transforms them and inserts.
+    :param cur: postgres db cursor
+    :param filepath: JSON files location
+    :return: None
+    """
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -38,7 +46,7 @@ def process_log_file(cur, filepath):
     # insert time data records
     time_data = list((t, t.dt.hour, t.dt.day, t.dt.weekofyear, t.dt.month, t.dt.year, t.dt.weekday))
     column_labels = list(('start_time', 'hour', 'day', 'week', 'month', 'year', 'weekday'))
-    time_df =  pd.DataFrame.from_dict(dict(zip(column_labels, time_data)))
+    time_df = pd.DataFrame.from_dict(dict(zip(column_labels, time_data)))
 
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, list(row))
@@ -64,16 +72,26 @@ def process_log_file(cur, filepath):
 
         # insert songplay record
         songplay_data = (pd.to_datetime(row.ts, unit='ms'), row.userId, row.level, songid, \
-                        artistid, row.sessionId, row.location, row.userAgent)
+                         artistid, row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
 def process_data(cur, conn, filepath, func):
+    """
+    Read all files under filepath, and processes all logs found via functions.
+    :param cur: Cursor of the sparkifydb database
+    :param conn: Connection to the sparkifycdb database
+    :param filepath: Filepath of log files (song_data and log_data)
+    :param func: Function to be used to process each log
+    :return: Name of files processed
+    """
+
     # get all files matching extension from directory
     all_files = []
+
     for root, dirs, files in os.walk(filepath):
-        files = glob.glob(os.path.join(root,'*.json'))
-        for f in files :
+        files = glob.glob(os.path.join(root, '*.json'))
+        for f in files:
             all_files.append(os.path.abspath(f))
 
     # get total number of files found
@@ -88,6 +106,10 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+     Function used to extract, transform all data from song and user activity logs and load it into a PostgreSQL DB.
+    :return: None
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
