@@ -37,8 +37,38 @@ Example:
 ### Database schema
 
 #### Staging Tables
-- staging_events
-- staging_songs
+**staging_events**
+- event_id INT PRIMARY KEY
+- artist_name VARCHAR(255)
+- auth VARCHAR(50)
+- user_first_name VARCHAR(255)
+- user_gender  VARCHAR(1)
+- item_in_session	INTEGER
+- user_last_name VARCHAR(255)
+- song_length	DOUBLE PRECISION 
+- user_level VARCHAR(50)
+- location VARCHAR(255)
+- method VARCHAR(25)
+- page VARCHAR(35)
+- registration VARCHAR(50)
+- session_id	BIGINT
+- song_title VARCHAR(255)
+- status INTEGER 
+- ts VARCHAR(50)
+- user_agent TEXT
+- user_id VARCHAR(100)
+
+**staging_songs**
+- song_id VARCHAR(100) PRIMARY KEY
+- num_songs INTEGER
+- artist_id VARCHAR(100)
+- artist_latitude DOUBLE PRECISION
+- artist_longitude DOUBLE PRECISION
+- artist_location VARCHAR(255)
+- artist_name VARCHAR(255)
+- title VARCHAR(255)
+- duration DOUBLE PRECISION
+- year INTEGER
 
 #### Fact Table
 **songplays** - records in log data associated with song plays i.e. records with page NextSong
