@@ -60,7 +60,7 @@ def process_song_data(spark, input_data, output_data):
 
 
 def process_log_data(spark, input_data, output_data):
-    ''' Processing log data (users, time table, songplay) from JSON.
+    ''' Processing log data (users, time, songplay tables) from JSON.
         After processing output is stored as parquet file. '''
 
     # JSON structure of log data
@@ -126,10 +126,12 @@ def process_log_data(spark, input_data, output_data):
     song_df = spark.read.json(song_data)
 
     # extract columns from joined song and log datasets to create songplays table
-    songplays_table = song_df.join(df, song_df.artist_name==df.artist).
-    withColumn('songplay_id', monotonically_increasing_id()).
-    withColumn('start_time', to_timestamp(date_format((col('ts') /1000).cast(dataType=TimestampType()), timestamp_format),timestamp_format)).
-    select('songplay_id',
+    songplays_table = song_df.join(df, song_df.artist_name==df.artist).\
+        withColumn('songplay_id', monotonically_increasing_id()).\
+        withColumn('start_time', to_timestamp(date_format((col('ts') /1000).
+                                                          cast(dataType=TimestampType()), timestamp_format),
+                                              timestamp_format)).\
+        select('songplay_id',
            'start_time',
            col('userId').alias('user_id'),
            'level',
