@@ -8,10 +8,10 @@ from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, dat
 
 
 config = configparser.ConfigParser()
-config.read('dl.cfg')
+parser = config.read('dl.cfg')
 
-os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
-os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
+os.environ['AWS_ACCESS_KEY_ID'] = config.get('AWS_CREDENTIALS', 'AWS_ACCESS_KEY_ID')
+os.environ['AWS_SECRET_ACCESS_KEY'] = config.get('AWS_CREDENTIALS', 'AWS_SECRET_ACCESS_KEY')
 
 
 def create_spark_session():
