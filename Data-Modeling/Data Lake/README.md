@@ -32,25 +32,24 @@ filepaths to two files in this dataset.
 ```
 
 --------------------------------------------
-
 ### ETL Process
+
 Load the credentials from dl.cfg
 Load the Data which are in JSON Files(Song Data and Log Data)
 After loading the JSON Files from S3 4.Use Spark process this JSON files and then generate a set of Fact and Dimension Tables
 Load back these dimensional process to S3
 --------------------------------------------
 
-
 ##Schema for Song Play Analysis
 
 A Star Schema would be required for optimized queries on song play queries
 
-###Fact Table
+### Fact Table
 
 songplays - records in event data associated with song plays i.e. records with page NextSong 
 songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
-###Dimension Tables
+### Dimension Tables
 
 users - users in the app user_id, first_name, last_name, gender, level
 
@@ -65,8 +64,8 @@ time - timestamps of records in songplays broken down into specific units start_
 
 The project includes files:
 * <b> /data </b> - a folder that cointains two zip files, helpful for data exploration
-* <b> etl.py </b> - the ETL engine done with Spark, data normalization and parquet file writing.
-* <b> dhw.cfg </b> - configuration file that contains info about AWS credentials
+* <b> etl.py </b> - the ETL engine done with Spark, reads data from S3, processes that data and writes them back to S3.
+* <b> dhw.cfg </b> - configuration file that contains AWS Credentials
 * <b> README.md </b> - explination of process and decisions for this ETL pipeline.
 --------------------------------------------
 

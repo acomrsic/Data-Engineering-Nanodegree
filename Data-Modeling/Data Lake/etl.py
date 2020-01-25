@@ -15,7 +15,7 @@ os.environ['AWS_SECRET_ACCESS_KEY'] = config.get('AWS_CREDENTIALS', 'AWS_SECRET_
 
 
 def create_spark_session():
-    ''' Creating Spark session '''
+    """ Creating Spark session """
     spark = SparkSession \
         .builder \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.0') \
@@ -24,8 +24,8 @@ def create_spark_session():
 
 
 def process_song_data(spark, input_data, output_data):
-    ''' Processing song and artist data from JSON. 
-        After processing output is stored as parquet file. '''
+    """ Processing song and artist data from JSON. 
+        After processing output is stored as parquet file. """
 
     # JSON structure of song data
     song_data_schema = StructType([
@@ -51,7 +51,7 @@ def process_song_data(spark, input_data, output_data):
     # write songs table to parquet files partitioned by year and artist
     songs_table.write.partitionBy('year', 'artist_id').parquet(output_data + 'songs')
 
-    #extract columns to create artists table
+    # extract columns to create artists table
     artists_table = df.select('artist_id', 'artist_name', 'artist_location', 'artist_latitude',
                               'artist_longitude')
 
@@ -60,8 +60,8 @@ def process_song_data(spark, input_data, output_data):
 
 
 def process_log_data(spark, input_data, output_data):
-    ''' Processing log data (users, time, songplay tables) from JSON.
-        After processing output is stored as parquet file. '''
+    """ Processing log data (users, time, songplay tables) from JSON.
+        After processing output is stored as parquet file. """
 
     # JSON structure of log data
     log_data_schema = StructType([
@@ -89,15 +89,14 @@ def process_log_data(spark, input_data, output_data):
     log_data = input_data + 'log-data'
 
     # read log data file, JSON structure
-    df = spark.read.json(log_data, schema = log_data_schema)
+    df = spark.read.json(log_data, schema=log_data_schema)
 
     # filter by actions for song plays
     df = df.filter(col('page') == 'NextSong')
 
-
     # extract columns for users table
-    users_table = df.select(col('userId').alias('user_id'),col('firstName').alias('first_name'),
-                            col('lastName').alias('last_name'),'gender','level')
+    users_table = df.select(col('userId').alias('user_id'), col('firstName').alias('first_name'),
+                            col('lastName').alias('last_name'), 'gender', 'level')
 
     # write users table to parquet files
     users_table.write.parquet(output_data + 'users')
@@ -117,7 +116,6 @@ def process_log_data(spark, input_data, output_data):
                                    month(col('ts')).alias('month'),
                                    year(col('ts')).alias('year'))
 
-
     # write time table to parquet files partitioned by year and month
     time_table.write.partitionBy('year','month').parquet(output_data+'time')
 
@@ -126,9 +124,9 @@ def process_log_data(spark, input_data, output_data):
     song_df = spark.read.json(song_data)
 
     # extract columns from joined song and log datasets to create songplays table
-    songplays_table = song_df.join(df, song_df.artist_name==df.artist).\
+    song_plays_table = song_df.join(df, song_df.artist_name == df.artist).\
         withColumn('songplay_id', monotonically_increasing_id()).\
-        withColumn('start_time', to_timestamp(date_format((col('ts') /1000).
+        withColumn('start_time', to_timestamp(date_format((col('ts') / 1000).
                                                           cast(dataType=TimestampType()), timestamp_format),
                                               timestamp_format)).\
         select('songplay_id',
@@ -144,7 +142,7 @@ def process_log_data(spark, input_data, output_data):
            year(col('start_time')).alias('year'))
 
     # write songplays table to parquet files partitioned by year and month
-    songplays_table.write.partitionBy('year','month').parquet(output_data+'songplays')
+    song_plays_table.write.partitionBy('year', 'month').parquet(output_data+'songplays')
 
 
 def main():
