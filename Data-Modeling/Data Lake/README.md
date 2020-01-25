@@ -48,8 +48,11 @@ songplay_id, start_time, user_id, level, song_id, artist_id, session_id, locatio
 
 ### Dimension Tables
 <b>users</b> - users in the app user_id, first_name, last_name, gender, level
+
 <b>songs</b> - songs in music database song_id, title, artist_id, year, duration
+
 <b>artists</b> - artists in music database artist_id, name, location, lattitude, longitude
+
 <b>time</b> - timestamps of records in songplays broken down into specific units start_time, hour, day, week, month, year, weekday
 
 --------------------------------------------
@@ -64,5 +67,5 @@ The project includes files:
 
 ### How to Execute Code
 
-- Run in terminal `python create_tables.py`. This script will drop old tables (if exist) ad re-create new tables
-- Run in terminal `python etl.py`. This script executes the queries that extract JSON data from the S3 bucket and ingest them to Redshift
+1. Write correct keys in dl.cfg
+2. Open terminal and write the command "python etl.py"
