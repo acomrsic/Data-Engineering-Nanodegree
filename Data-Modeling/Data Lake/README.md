@@ -34,30 +34,23 @@ filepaths to two files in this dataset.
 --------------------------------------------
 ### ETL Process
 
-Load the credentials from dl.cfg
-Load the Data which are in JSON Files(Song Data and Log Data)
-After loading the JSON Files from S3 4.Use Spark process this JSON files and then generate a set of Fact and Dimension Tables
-Load back these dimensional process to S3
+1. Load the credentials from dl.cfg
+2. Load the Data which are in JSON Files(Song Data and Log Data)
+3. After loading the JSON Files from S3 Use Spark process this JSON files and then generate a set of Fact and Dimension Tables
+4  Load back these dimensional process to S3
 --------------------------------------------
 
-##Schema for Song Play Analysis
-
-A Star Schema would be required for optimized queries on song play queries
+## Database schema
 
 ### Fact Table
-
-songplays - records in event data associated with song plays i.e. records with page NextSong 
+<b>songplays</b> - records in event data associated with song plays i.e. records with page NextSong 
 songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
 ### Dimension Tables
-
-users - users in the app user_id, first_name, last_name, gender, level
-
-songs - songs in music database song_id, title, artist_id, year, duration
-
-artists - artists in music database artist_id, name, location, lattitude, longitude
-
-time - timestamps of records in songplays broken down into specific units start_time, hour, day, week, month, year, weekday
+<b>users</b> - users in the app user_id, first_name, last_name, gender, level
+<b>songs</b> - songs in music database song_id, title, artist_id, year, duration
+<b>artists</b> - artists in music database artist_id, name, location, lattitude, longitude
+<b>time</b> - timestamps of records in songplays broken down into specific units start_time, hour, day, week, month, year, weekday
 
 --------------------------------------------
 ### Structure of project
