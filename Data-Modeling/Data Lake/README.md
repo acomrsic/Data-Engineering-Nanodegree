@@ -35,9 +35,9 @@ filepaths to two files in this dataset.
 ### ETL Process
 
 1. Load the credentials from dl.cfg
-2. Load the Data which are in JSON Files(Song Data and Log Data)
-3. After loading the JSON Files from S3 Use Spark process this JSON files and then generate a set of Fact and Dimension Tables
-4  Load back these dimensional process to S3
+2. Read the data which are in JSON Files (Song Data and Log Data) from S3.
+3. After loading the JSON files from S3, use Spark to process JSON files and  generate a set of fact and dimension tables
+4  Load back these dimensional process to S3. Each of the five tables are written to parquet files.
 --------------------------------------------
 
 ## Database schema
