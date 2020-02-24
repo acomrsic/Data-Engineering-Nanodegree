@@ -19,7 +19,7 @@ default_args = {
 dag = DAG(
     'etl_task',
     default_args=default_args,
-    description='ETL in Redshift with Airflow'
+    description='Airflow ETL jobs in Redshift'
 )
 
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
