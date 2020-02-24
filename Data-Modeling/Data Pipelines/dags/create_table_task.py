@@ -6,7 +6,7 @@ import sql_statements
 
 default_args = {
     'owner': 'fs',
-    'start_date': datetime(2019, 6, 24),
+    'start_date': datetime(2020, 2, 24),
     'email_on_retry': False,
     'retries': 3,
     'retry_delay': timedelta(minutes=5),
